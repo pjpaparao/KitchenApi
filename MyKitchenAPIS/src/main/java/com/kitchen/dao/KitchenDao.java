@@ -1,10 +1,12 @@
 package com.kitchen.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kitchen.registerPojo.Register;
+import com.kitchen.userpojo.User;
 
 @Repository("dao")
 public class KitchenDao {
@@ -23,6 +25,11 @@ public class KitchenDao {
 			e.printStackTrace();
 		}
 		return records;
+	}
+
+	public User checkValidUser(String hash) {
+		String sql = "select name,email from register where password=?";
+		return template.queryForObject(sql, new Object[] { hash }, new BeanPropertyRowMapper<User>(User.class));
 	}
 
 }

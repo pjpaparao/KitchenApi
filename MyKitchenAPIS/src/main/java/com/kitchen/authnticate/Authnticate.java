@@ -2,14 +2,14 @@ package com.kitchen.authnticate;
 
 public class Authnticate {
 
-	private String username,password;
+	private String email,password;
 
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String username) {
+		this.email = username;
 	}
 
 	public String getPassword() {

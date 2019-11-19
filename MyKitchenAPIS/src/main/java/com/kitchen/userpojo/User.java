@@ -1,7 +1,7 @@
 package com.kitchen.userpojo;
 
 public class User {
-	private String name, mobile, email;
+	private String name, email;
 
 	public String getName() {
 		return name;
@@ -9,14 +9,6 @@ public class User {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getMobile() {
-		return mobile;
-	}
-
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
 	}
 
 	public String getEmail() {

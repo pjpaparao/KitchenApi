@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.kitchen.authnticate.Authnticate;
 import com.kitchen.registerPojo.Register;
 import com.kitchen.services.KithchenServices;
@@ -41,11 +42,20 @@ public class InitialControler {
 		this.service = service;
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
-	public User login(@RequestBody Authnticate auth) {
-
-		System.out.println("hello");
-		return new User();
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public Map<String, String> login(@RequestBody String form,HttpServletRequest req,HttpServletResponse res) throws JsonParseException, JsonMappingException, IOException {
+		ObjectMapper mapper=new ObjectMapper();
+		Authnticate auth = mapper.readValue(form, Authnticate.class);
+		User user = service.validateForm(auth);
+		System.out.println(user.getEmail()+"\n"+user.getName());
+		Map<String, String> map = new HashMap<String, String>();
+		ObjectMapper obj = new ObjectMapper();
+		Gson gson = new Gson();
+		map.put("user", gson.toJson(user));
+		UUID uuid = UUID.randomUUID();
+		String token = uuid.toString();
+		map.put("token", token);
+		return map;
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
@@ -75,12 +85,9 @@ public class InitialControler {
 
 				if (val) {
 					validate = val;
-					UUID uuid = UUID.randomUUID();
-					token = uuid.toString();
+					map = new HashMap<String, String>();
+					map.put("register", validate + "");
 				}
-				map = new HashMap<String, String>();
-				map.put("register", validate + "");
-				map.put("token", token);
 			}
 
 		} catch (JsonParseException e) {
